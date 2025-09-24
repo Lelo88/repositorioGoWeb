@@ -1,0 +1,30 @@
+package handlers
+
+import (
+	"fmt"
+	"net/http"
+)
+
+// IndexHandler handles requests to the root URL path. It responds with a simple "Hello, World!" message.
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, World!")
+}
+
+// NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
+func NewGame(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "New Game!")
+}
+
+// LoadGame handles requests to the /load-game URL path. It responds with a "Load Game!" message.
+func Game(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Game!")
+}
+
+func Play(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Play!")
+}
+
+// SaveGame handles requests to the /save-game URL path. It responds with a "Save Game!" message.
+func About(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "About!")
+}
