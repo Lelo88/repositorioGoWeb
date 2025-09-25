@@ -37,6 +37,7 @@ logs/
 # Archivos temporales
 tmp/
 temp/
+tmp/main
 
 # Archivos de configuración sensibles
 .env
