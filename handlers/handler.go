@@ -2,12 +2,19 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
 // IndexHandler handles requests to the root URL path. It responds with a simple "Hello, World!" message.
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
+	tmpl, err := template.ParseFiles("templates/index.html")
+	if err != nil {
+		http.Error(w, "Error loading template", http.StatusInternalServerError)
+		return
+	}
+	
+	tmpl.Execute(w, nil)
 }
 
 // NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
