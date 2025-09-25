@@ -8,13 +8,18 @@ import (
 
 // IndexHandler handles requests to the root URL path. It responds with a simple "Hello, World!" message.
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("templates/index.html")
+	tmpl, err := template.ParseFiles("templates/base.html", "templates/index.html")
 	if err != nil {
 		http.Error(w, "Error loading template", http.StatusInternalServerError)
 		return
 	}
 	
-	tmpl.Execute(w, nil)
+	err = tmpl.ExecuteTemplate(w, "base", nil)
+	if err != nil {
+		http.Error(w, "Error rendering template", http.StatusInternalServerError)
+		return
+	}
+
 }
 
 // NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
