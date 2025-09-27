@@ -13,6 +13,11 @@ func main() {
 	// Create a new ServeMux (router)
 	router := http.NewServeMux()
 
+	// Serve static files from the "static" directory
+	fileServer := http.FileServer(http.Dir("./static/"))
+	// Rute to serve static files when the URL path starts with /static/
+	router.Handle("/static/", http.StripPrefix("/static/", fileServer))
+
 	// Register the IndexHandler for the root URL path
 	router.HandleFunc("/", handlers.IndexHandler)
 	router.HandleFunc("/new-game", handlers.NewGame)
