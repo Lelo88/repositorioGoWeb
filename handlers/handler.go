@@ -19,12 +19,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 // NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
 func NewGame(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "New Game!")
+	renderTemplate(w, baseTemplate, "new-game.html", nil)
 }
 
-// LoadGame handles requests to the /load-game URL path. It responds with a "Load Game!" message.
+// Game handles requests to the /game URL path. It responds with a "Game!" message.
 func Game(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Game!")
+	renderTemplate(w, baseTemplate, "game.html", nil)
 }
 
 func Play(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,7 @@ func Play(w http.ResponseWriter, r *http.Request) {
 
 // SaveGame handles requests to the /save-game URL path. It responds with a "Save Game!" message.
 func About(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "About!")
+	renderTemplate(w, baseTemplate, "about.html", nil)
 }
 
 func renderTemplate(w http.ResponseWriter, base, page string, data any) {
