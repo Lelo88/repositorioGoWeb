@@ -1,0 +1,23 @@
+header {
+    padding: 20px 0;
+    background-color: #abebc6;
+}
+
+header.logo {
+    text-decoration: dashed;
+    height: 100px;
+    width: 100px;
+    color: #186a3b;
+    margin-left: 10px;
+}
+
+header nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #186a3b;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
