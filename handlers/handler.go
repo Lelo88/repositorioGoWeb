@@ -7,6 +7,12 @@ import (
 	"net/http"
 )
 
+type Player struct {
+	Name string
+}
+
+var player Player
+
 const (
 	templateDir  = "templates/"
 	baseTemplate = templateDir + "base.html"
@@ -24,7 +30,20 @@ func NewGame(w http.ResponseWriter, r *http.Request) {
 
 // Game handles requests to the /game URL path. It responds with a "Game!" message.
 func Game(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, baseTemplate, "game.html", nil)
+	// Handle form submission
+	if r.Method == http.MethodPost {
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Error parsing form", http.StatusBadRequest)
+			return
+		}
+		
+		// Get the player's name from the form data
+		player.Name = r.Form.Get("name")
+	}
+
+	// fmt.Println("Player Name:", player.Name)
+
+	renderTemplate(w, baseTemplate, "game.html", player)
 }
 
 func Play(w http.ResponseWriter, r *http.Request) {
