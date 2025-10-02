@@ -20,11 +20,16 @@ const (
 
 // IndexHandler handles requests to the root URL path. It responds with a simple "Hello, World!" message.
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	// Restart player values
+	restartValues()
+	// Render the index template
 	renderTemplate(w, baseTemplate, "index.html", nil)
 }
 
 // NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
 func NewGame(w http.ResponseWriter, r *http.Request) {
+	// Restart player values
+	restartValues()
 	renderTemplate(w, baseTemplate, "new-game.html", nil)
 }
 
@@ -41,7 +46,11 @@ func Game(w http.ResponseWriter, r *http.Request) {
 		player.Name = r.Form.Get("name")
 	}
 
-	// fmt.Println("Player Name:", player.Name)
+	if player.Name == "" {
+		http.Redirect(w, r, "/new-game", http.StatusFound)
+		return
+	}
+	//fmt.Println("Player Name:", player.Name)
 
 	renderTemplate(w, baseTemplate, "game.html", player)
 }
@@ -52,6 +61,8 @@ func Play(w http.ResponseWriter, r *http.Request) {
 
 // SaveGame handles requests to the /save-game URL path. It responds with a "Save Game!" message.
 func About(w http.ResponseWriter, r *http.Request) {
+	// Restart player values
+	restartValues()
 	renderTemplate(w, baseTemplate, "about.html", nil)
 }
 
@@ -64,4 +75,9 @@ func renderTemplate(w http.ResponseWriter, base, page string, data any) {
 		log.Println(err)
 		return
 	}
+}
+
+// Reinit values
+func restartValues() {
+	player.Name = ""
 }
