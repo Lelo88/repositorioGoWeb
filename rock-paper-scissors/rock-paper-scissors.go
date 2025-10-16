@@ -4,22 +4,27 @@ import (
 	"math"
 	"math/rand"
 	"strconv"
+	"time"
 )
 
+// Inicializar semilla aleatoria una sola vez
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 const (
-	ROCK    = 0 // Representa piedra. La logica se manejará con módulos.
-	PAPER   = 1 // Representa papel.
+	ROCK     = 0 // Representa piedra. La logica se manejará con módulos.
+	PAPER    = 1 // Representa papel.
 	SCISSORS = 2 // Representa tijeras.
 )
 
 type Round struct {
-	Message string `json:"message"`
-	ComputerChoice string `json:"computer_choice"`
-	RoundResult string `json:"round_result"`
-	ComputerChoiceInt int `json:"computer_choice_int"`
-	ComputerScore string `json:"computer_score"`
-	PlayerScore string `json:"player_score"`
+	Message             string `json:"message"`
+	ComputerChoice      string `json:"computer_choice"`
+	RoundResult         string `json:"round_result"`
+	ComputerChoiceIndex int    `json:"computer_choice_index"` // Cambiar nombre para que coincida con JS
+	ComputerScore       string `json:"computer_score"`
+	PlayerScore         string `json:"player_score"`
 }
 
 var winMessages = []string{
@@ -42,11 +47,22 @@ var drawMessages = []string{
 
 var computerScore, playerScore int
 
+// ResetScores reinicia los puntajes a 0
+func ResetScores() {
+	computerScore = 0
+	playerScore = 0
+}
+
+// GetScores devuelve los puntajes actuales (para debugging)
+func GetScores() (int, int) {
+	return computerScore, playerScore
+}
+
 func PlayRound(playerValue int) Round {
 	computerValue := int(math.Floor(3 * rand.Float64()))
 
 	var result Round
-	
+
 	var computerChoice, roundResult string
 	var computerChoiceInt int
 
@@ -79,12 +95,12 @@ func PlayRound(playerValue int) Round {
 	}
 
 	result = Round{
-		Message: message,
-		ComputerChoice: computerChoice,
-		RoundResult: roundResult,
-		ComputerChoiceInt: computerChoiceInt,
-		ComputerScore:  strconv.Itoa(computerScore),
-		PlayerScore: strconv.Itoa(playerScore),
+		Message:             message,
+		ComputerChoice:      computerChoice,
+		RoundResult:         roundResult,
+		ComputerChoiceIndex: computerChoiceInt,
+		ComputerScore:       strconv.Itoa(computerScore),
+		PlayerScore:         strconv.Itoa(playerScore),
 	}
 
 	return result
