@@ -1,10 +1,13 @@
 package handlers
 
 import (
-	"fmt"
+	"encoding/json"
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
+
+	rockpaperscissors "github.com/Lelo88/repositorioGoWeb/rock-paper-scissors"
 )
 
 type Player struct {
@@ -20,16 +23,16 @@ const (
 
 // IndexHandler handles requests to the root URL path. It responds with a simple "Hello, World!" message.
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	// Restart player values
-	restartValues()
+	// Restart player values and game scores
+	restartGame()
 	// Render the index template
 	renderTemplate(w, baseTemplate, "index.html", nil)
 }
 
 // NewGame handles requests to the /new-game URL path. It responds with a "New Game!" message.
 func NewGame(w http.ResponseWriter, r *http.Request) {
-	// Restart player values
-	restartValues()
+	// Restart player values and game scores
+	restartGame()
 	renderTemplate(w, baseTemplate, "new-game.html", nil)
 }
 
@@ -41,7 +44,7 @@ func Game(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error parsing form", http.StatusBadRequest)
 			return
 		}
-		
+
 		// Get the player's name from the form data
 		player.Name = r.Form.Get("name")
 	}
@@ -56,18 +59,30 @@ func Game(w http.ResponseWriter, r *http.Request) {
 }
 
 func Play(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Play!")
+	playerChoice, _ := strconv.Atoi(r.URL.Query().Get("choice"))
+
+	result := rockpaperscissors.PlayRound(playerChoice)
+
+	out, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		http.Error(w, "Error encoding JSON response", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(out)
 }
 
 // SaveGame handles requests to the /save-game URL path. It responds with a "Save Game!" message.
 func About(w http.ResponseWriter, r *http.Request) {
-	// Restart player values
+	// Solo reiniciar nombre del jugador, no los scores
 	restartValues()
 	renderTemplate(w, baseTemplate, "about.html", nil)
 }
 
 func renderTemplate(w http.ResponseWriter, base, page string, data any) {
-	tmpl := template.Must(template.ParseFiles(base, templateDir + page))
+	tmpl := template.Must(template.ParseFiles(base, templateDir+page))
 
 	err := tmpl.ExecuteTemplate(w, "base", data)
 	if err != nil {
@@ -80,4 +95,11 @@ func renderTemplate(w http.ResponseWriter, base, page string, data any) {
 // Reinit values
 func restartValues() {
 	player.Name = ""
+	// Solo reiniciar scores en nuevo juego, no en cada carga de página
+}
+
+// Reinit values including scores
+func restartGame() {
+	player.Name = ""
+	rockpaperscissors.ResetScores()
 }

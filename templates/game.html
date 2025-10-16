@@ -9,17 +9,22 @@
         <div class="row">
             <div class="col py-5 text-center">
                 <h2>{{.Name}}</h2>
-                <p class="fw-bold"></p>
+                <p class="fw-bold" id="player_score">Puntuación: 0</p>
+                <div class="card p-3 mb-3">
+                    <div class="d-flex justify-content-center">
+                        <img src="static/img/reload_icon.png" id="imgPlayer" alt="player_choice" width="100" class="img-fluid">
+                    </div>
+                </div>
                 <div class="d-grid gap-2 card p-3">
-                    <button class="btn btn-outline-success">
+                    <button class="btn btn-outline-success" onclick="choose(0)">
                         <img src="static/img/hand_rock.png" alt="hand_rock" width="50" class="img-fluid">
                         <span class="fw-bold">Piedra</span>
                     </button>
-                    <button class="btn btn-outline-success">
+                    <button class="btn btn-outline-success" onclick="choose(1)">
                         <img src="static/img/hand_paper.png" alt="hand_paper" width="50" class="img-fluid">
                         <span class="fw-bold">Papel</span>
                     </button>
-                    <button class="btn btn-outline-success">   
+                    <button class="btn btn-outline-success" onclick="choose(2)">
                         <img src="static/img/hand_scissors.png" alt="hand_scissors" width="50" class="img-fluid">
                         <span class="fw-bold">Tijera</span>
                     </button>
@@ -27,10 +32,10 @@
             </div>
             <div class="col py-5 text-center">
                 <h2>Computadora</h2>
-                <p class="fw-bold">0</p>
+                <p class="fw-bold" id="computer_score">Puntuación: 0</p>
                 <div class="card p-3">
                     <div class="d-flex justify-content-center">
-                        <img src="static/img/reload_icon.png" alt="reload_icon" width="200" class="img-fluid">
+                        <img src="static/img/reload_icon.png" id="imgComputer" alt="reload_icon" width="200" class="img-fluid">
                     </div>
                 </div>
             </div>
@@ -38,20 +43,20 @@
     </div>
 </section>
 
-<section>
+<section id="results-section" style="display: none; opacity: 0; transition: opacity 0.5s ease-in-out;">
     <div class="container">
         <div class="row">
             <h2>Resultados</h2>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">El jugador eligió roca</li>
-                <li class="list-group-item">La computadora eligió papel</li>
-                <li class="list-group-item text-danger">La computadora gana</li>
-                <li class="list-group-item text-success">Este no es tu día</li>
+                <li class="list-group-item" id="player_choice"></li>
+                <li class="list-group-item" id="computer_choice"></li>
+                <li class="list-group-item" id="round_result"></li>
+                <li class="list-group-item" id="message"></li>
             </ul>
         </div>
         <div class="row text-center">
             <div class="col py-3">
-                <a href="/game" class="btn btn-success btn-lg">Jugar de nuevo</a>
+                <a href="/new-game" class="btn btn-success btn-lg">Nuevo Juego</a>
             </div>
         </div>
     </div>
